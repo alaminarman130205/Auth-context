@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../Context/UserContext";
 
 const Register = () => {
+  const { createUser } = useContext(AuthContext);
+  console.log(createUser);
+
   const handlesubmit = (event) => {
     event.preventDefault();
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
     const name = form.name.value;
-    console.log(email, password, name);
+
+    createUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log("register user ", user);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
+
   return (
     <div>
       <div className="hero min-h-screen bg-base-200">
@@ -22,19 +35,19 @@ const Register = () => {
             <form onSubmit={handlesubmit} className="card-body">
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Email</span>
+                  <span className="label-text">Name</span>
                 </label>
+                <input
+                  type="name"
+                  name="name"
+                  placeholder="name"
+                  className="input input-bordered"
+                  required
+                />
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">Name</span>
+                    <span className="label-text">Email</span>
                   </label>
-                  <input
-                    type="name"
-                    name="name"
-                    placeholder="name"
-                    className="input input-bordered"
-                    required
-                  />
                   <input
                     type="email"
                     name="email"
